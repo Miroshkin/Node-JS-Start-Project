@@ -1,61 +1,22 @@
 //Problem
 var Profile = require("./profile.js");
-
 //Solution
 //1.Create a web server
 var http = require('http');
+var routes = require("./routes.js");
 
 //create a server object:
 http.createServer(function (request, response) {
-  homeRoute(request, response); //write a response to the client
+  //write a response to the client
 //  response.end(); //end the response
 //  response.write("This is after the end\n");
+  routes.home(request, response);
+  routes.user(request,response);
 }).listen(3000); //the server object listens on port 1337
 console.log('Server running at http://<workspace-url>');
 
 
-//2. Handle HTTP route GET and POST i.e. Home
-function homeRoute (request, response) {
-  //  if url ==="/" && GET
-if (request.url === "/"){
-  //    show search
-  response.writeHead(200, {'Content-Type':'text/plain'});
-  response.write('Header\n');
-  response.write('Search\n');
-  response.end("Footer\n");
-}
-  // if url ==="/" POST
-  //   redirect to /:username
-}
 
-
-//3. Handle HTTP route GET /:username /chalklers
-function user(request, response) {
-  var username = request.url.replace("/", "");
-  if(username.length > 0){
-    response.writeHead(200, {'Content-Type' : 'text/plain'});
-    response.write("Header\n");
-
-    var studentProfile = new Profile(username);
-    studentProfile.on("end", function(profileJSON){
-      //Store the values
-      var values = {
-        avatarUrl : profileJSON.gravatar_url,
-        username: profileJSON.profile_name,
-        badges: profileJSON.badges.length,
-        javascriptPoints: profileJSON.points.JavaScript
-      };
-
-      response.write(values.username + " has" + values.badges + "\n");
-      response.end('Footer\n');
-    });
-
-    studentProfile.on("error", function(error){
-      response.write(error.message + "\n");
-      response.end('Footer\n');
-    });
-  }
-}
 
 var studentProfile = new Profile("chalkers");
   //if url ==="/..."
