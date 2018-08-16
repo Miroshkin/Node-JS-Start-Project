@@ -1,6 +1,7 @@
 //Problem
 var Profile = require("./profile.js");
 var renderer = require("./renderer.js");
+var querystring = require('querystring');
 //Solution
 //1.Create a web server
 var http = require('http');
@@ -17,6 +18,9 @@ function home (request, response) {
       renderer.view('search',{}, response);
       renderer.view("footer",{}, response);
       response.end();
+    } else {
+       var a = querystring.parse(request);
+       console.dir(a);
     }
   // if url ==="/" POST
   //   redirect to /:username
